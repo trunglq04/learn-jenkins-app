@@ -44,15 +44,17 @@ pipeline {
       stage('E2E') {
         agent {
           docker {
-            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+            image 'mcr.microsoft.com/playwright:v1.48.1-noble'
             reuseNode true
+            // Should not use as root user, instead use local app from installed package.
+            // args '-u root:root' 
           }
         }
 
         steps {
             sh '''
-              npm i -g serve
-              serve -s build
+              npm i serve
+              node_modules\.bin\serve -s build
               npx playwright test
             '''
         }
