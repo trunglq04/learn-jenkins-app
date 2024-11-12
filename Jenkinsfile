@@ -1,8 +1,9 @@
 pipeline {
     agent any
 
-    /*
+    
     stages {
+    /*
       stage('Build') {
         agent {
           docker {
@@ -23,23 +24,7 @@ pipeline {
       }
       */
 
-      stage('E2E') {
-        agent {
-          docker {
-            image 'mcr.microsoft.com/playwright:v1.48.1-noble'
-            reuseNode true
-          }
-        }
-
-        steps {
-            echo "Test stage"
-            sh '''
-              npm i -g serve
-              serve -s build
-              npx playwright test
-            '''
-        }
-      }
+      
 
       stage('Test') {
         agent {
@@ -57,6 +42,24 @@ pipeline {
             '''
         }
       }
+
+      stage('E2E') {
+        agent {
+          docker {
+            image 'mcr.microsoft.com/playwright:v1.48.1-noble'
+            reuseNode true
+          }
+        }
+
+        steps {
+            sh '''
+              npm i -g serve
+              serve -s build
+              npx playwright test
+            '''
+        }
+      }
+
     }
 
     post {
