@@ -52,9 +52,11 @@ pipeline {
         }
 
         steps {
+            echo "E2E stage"
             sh '''
               npm i serve
-              node_modules/.bin/serve -s build
+              node_modules/.bin/serve -s build & 
+              sleep 10
               npx playwright test
             '''
         }
